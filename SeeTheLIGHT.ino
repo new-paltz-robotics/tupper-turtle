@@ -1,4 +1,11 @@
-int analogPin = 1;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int analogPin = 5;     // potentiometer wiper (middle terminal) connected to analog pin 3
+int rDirPin = 12; //12
+int rBreakPin = 9; //9
+int rSpeedPin = 3; //3
+
+int lDirPin = 13; //13
+int lBreakPin = 8; //8
+int lSpeedPin = 11; //11
                        // outside leads to ground and +5V           // variable to store the value read
 
 void setup()
