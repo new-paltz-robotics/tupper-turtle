@@ -5,12 +5,18 @@ int rSpeedPin = 3; //3
 
 int RIGHT = 1;
 int LEFT = 0;
-int THRESHHOLD = 10;
+int THRESHHOLD = 50;
 
 int lDirPin = 13; //13
 int lBreakPin = 8; //8
 int lSpeedPin = 11; //11
                        // outside leads to ground and +5V           // variable to store the value read
+
+//These are for math parts
+
+int numberOfAverages = 5;
+int oldAvg = 0;
+
 
 void setup()
 {
@@ -27,8 +33,10 @@ void setup()
 
 void loop()
 {
-  int variance = sensorMethod();    // read the input pin
+  int variance = sensorMethod();  // read the input pin
   Serial.println(variance);    // debug value
+  variance = smoothing(variance);
+  Serial.println(variance);
   if (variance >THRESHHOLD){
     Serial.print("right");
     turn(RIGHT, variance);
@@ -41,12 +49,29 @@ void loop()
     turn(RIGHT, 0);
 }
 
+int smoothing(int newer){
+  
+  oldAvg = ((oldAvg * numberOfAverages) + newer)/ (numberOfAverages + 1);
+  return oldAvg;
+  
+}
+
 
 void turn(int dir, int magnitude){
    if (magnitude != 0){
-     magnitude = map(magnitude, THRESHHOLD, 255, 125, 255);
+     magnitude = map(magnitude, THRESHHOLD, 200, 200, 200);
    }
-   Serial.println(magnitude);
+   else{
+     digitalWrite(rDirPin, LOW);
+     digitalWrite(rBreakPin, LOW);
+     digitalWrite(rSpeedPin, 200);
+     digitalWrite(lDirPin, HIGH);
+     digitalWrite(lSpeedPin, 200);
+     digitalWrite(rBreakPin, LOW);
+     
+   }
+     
+     Serial.println(magnitude);
    if (dir == LEFT) {
    digitalWrite(rDirPin, HIGH);
    digitalWrite(rBreakPin, LOW);
