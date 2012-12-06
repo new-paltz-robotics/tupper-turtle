@@ -5,6 +5,7 @@ int rSpeedPin = 3; //3
 
 int RIGHT = 1;
 int LEFT = 0;
+int THRESHHOLD = 10;
 
 int lDirPin = 13; //13
 int lBreakPin = 8; //8
@@ -28,19 +29,25 @@ void loop()
 {
   int variance = sensorMethod();    // read the input pin
   Serial.println(variance);    // debug value
-  if (variance >0){
+  if (variance >THRESHHOLD){
     Serial.print("right");
     turn(RIGHT, variance);
   }
-  else{
+  else if (variance < -THRESHHOLD){
     turn(LEFT, (-1* variance));
     Serial.print("left");
   }
+  else
+    turn(RIGHT, 0);
 }
 
 
 void turn(int dir, int magnitude){
- if (dir == LEFT) {
+   if (magnitude != 0){
+     magnitude = map(magnitude, THRESHHOLD, 255, 125, 255);
+   }
+   Serial.println(magnitude);
+   if (dir == LEFT) {
    digitalWrite(rDirPin, HIGH);
    digitalWrite(rBreakPin, LOW);
    analogWrite(rSpeedPin, magnitude);
