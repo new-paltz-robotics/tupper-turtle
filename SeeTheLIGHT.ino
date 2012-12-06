@@ -34,19 +34,21 @@ void setup()
 void loop()
 {
   int variance = sensorMethod();  // read the input pin
-  Serial.println(variance);    // debug value
+ // Serial.println(variance);    // debug value
   variance = smoothing(variance);
-  Serial.println(variance);
+ // Serial.println(variance);
   if (variance >THRESHHOLD){
-    Serial.print("right");
+  //  Serial.print("right");
     turn(RIGHT, variance);
   }
   else if (variance < -THRESHHOLD){
     turn(LEFT, (-1* variance));
-    Serial.print("left");
+  //  Serial.print("left");
   }
-  else
+  else{
+    Serial.println("forward");
     turn(RIGHT, 0);
+  }
 }
 
 int smoothing(int newer){
@@ -60,6 +62,25 @@ int smoothing(int newer){
 void turn(int dir, int magnitude){
    if (magnitude != 0){
      magnitude = map(magnitude, THRESHHOLD, 200, 200, 200);
+     if (dir == LEFT) {
+   digitalWrite(rDirPin, HIGH);
+   digitalWrite(rBreakPin, LOW);
+   analogWrite(rSpeedPin, magnitude);
+   
+   digitalWrite(lDirPin, HIGH); 
+   digitalWrite(lBreakPin, LOW); //Disengage the Brake for Channel B
+   analogWrite(lSpeedPin, magnitude); 
+   }
+      if (dir == RIGHT){
+   digitalWrite(rDirPin, LOW);
+   digitalWrite(rBreakPin, LOW);
+   analogWrite(rSpeedPin, magnitude);
+   
+   digitalWrite(lDirPin, LOW); 
+   digitalWrite(lBreakPin, LOW); //Disengage the Brake for Channel B
+   analogWrite(lSpeedPin, magnitude); 
+    }
+        
    }
    else{
      digitalWrite(rDirPin, LOW);
@@ -68,30 +89,9 @@ void turn(int dir, int magnitude){
      digitalWrite(lDirPin, HIGH);
      digitalWrite(lSpeedPin, 200);
      digitalWrite(rBreakPin, LOW);
-     
+
    }
-     
-     Serial.println(magnitude);
-   if (dir == LEFT) {
-   digitalWrite(rDirPin, HIGH);
-   digitalWrite(rBreakPin, LOW);
-   analogWrite(rSpeedPin, magnitude);
-   
-   digitalWrite(lDirPin, HIGH); 
-   digitalWrite(lBreakPin, LOW); //Disengage the Brake for Channel B
-   analogWrite(lSpeedPin, magnitude); 
- }
- if (dir == RIGHT){
-   digitalWrite(rDirPin, LOW);
-   digitalWrite(rBreakPin, LOW);
-   analogWrite(rSpeedPin, magnitude);
-   
-   digitalWrite(lDirPin, LOW); 
-   digitalWrite(lBreakPin, LOW); //Disengage the Brake for Channel B
-   analogWrite(lSpeedPin, magnitude); 
- }
- 
- 
+
 }
 
 int sensorMethod(){
