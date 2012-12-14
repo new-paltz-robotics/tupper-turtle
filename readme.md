@@ -2,6 +2,8 @@ Tupper-turtle is a relatively simple robot rover created by the [Robotics Lab at
 
 [See a Video of the robot in action.](http://www.botsandbrains.com/video/tupperturtle-fall-2012-robotics-lab-project)
 
+![Tupper-turtle Photo1](https://raw.github.com/new-paltz-robotics/tupper-turtle/master/tupper-turtle_photo1.jpg)
+
 ![Breadboard Image](https://raw.github.com/new-paltz-robotics/tupper-turtle/master/tupper-turtle_bb.jpg)
 
 ![Schematic Image](https://raw.github.com/new-paltz-robotics/tupper-turtle/master/tupper-turtle_schem.jpg)
